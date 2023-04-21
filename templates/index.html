@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelEase</title>
+</head>
+<body>
+    <h1>TravelEase</h1>
+    <form method="POST">
+        <label for="location">Where are you going?</label>
+        <input type="text" name="location" required>
+        <br>
+        <label for="days">How long are you staying there?</label>
+        <input type="number" name="days" min="1" required>
+        <br>
+        <label for="neighborhood">Which neighborhood are you staying in? (optional)</label>
+        <input type="text" name="neighborhood">
+        <br>
+        <label for="travel_desires">How do you like to travel?</label>
+        <select name="travel_desires" multiple required>
+            <option value="love hiking">Just give me hikes baby</option>
+            <option value="museum connoisseur">Museum connoisseur</option>
+            <option value="love history">History buff</option>
+            <option value="relax">Relax, don't bother me before noon</option>
+            <option value="soak up the culture">Let me soak up the culture in peace!</option>
+        </select>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+    {% if result %}
+    <h2>Your Itinerary:</h2>
+    <pre>{{ result }}</pre>
+    {% endif %}
+</body>
+</html>
