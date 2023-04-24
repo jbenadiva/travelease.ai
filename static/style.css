@@ -1,0 +1,33 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.destination-group {
+    margin-bottom: 1rem;
+}
+
+button {
+    background-color: #007BFF;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #0056B3;
+}
+
+#selected-desires {
+    display: inline-block;
+    padding-left: 0.5rem;
+}

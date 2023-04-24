@@ -13,31 +13,39 @@ openai.api_key = os.environ["OPENAI_API_KEY"]
 @app.route("/", methods=("GET", "POST"))
 def index():
     if request.method == "POST":
-        location = request.form["location"]
-        days = request.form["days"]
-        neighborhood = request.form["neighborhood"]
+        locations = request.form.getlist("location")
+        nights = request.form.getlist("nights")
+        neighborhoods = request.form.getlist("neighborhood")
         travel_desires = request.form.getlist("travel_desires")
+
+        prompt = generate_prompt(locations, nights, neighborhoods, travel_desires)
         response = openai.Completion.create(
             model="text-davinci-003",
-            prompt=generate_prompt(location, days, neighborhood, travel_desires),
+            prompt=prompt,
             temperature=0.6,
             max_tokens=3000,  # Increase this value to allow longer responses
         )
-        return redirect(url_for("index", result=response.choices[0].text))
+        result = response.choices[0].text
+        return render_template("index.html", result=result)
 
-    result = request.args.get("result")
-    return render_template("index.html", result=result)
+    return render_template("index.html")
 
 
-def generate_prompt(location, days, neighborhood, travel_desires):
-    if neighborhood:
-        neighborhood_prompt = f", staying in the {neighborhood} neighborhood"
-    else:
-        neighborhood_prompt = ""
+def generate_prompt(locations, nights, neighborhoods, travel_desires):
+    travel_desires_prompt = ", ".join(travel_desires)
+    itinerary_prompts = []
 
-    travel_desires_str = ", ".join(travel_desires)
+    for i, location in enumerate(locations):
+        nights_str = str(nights[i]) if i < len(nights) else "unknown number of"
+        neighborhood_prompt = f" and they would like to stay in {neighborhoods[i]}" if i < len(neighborhoods) and \
+                                                                                       neighborhoods[i] else ""
+        itinerary_prompt = f"Destination {i + 1}: {location}\nYou have a new client who is looking to spend {nights_str} days in {location}{neighborhood_prompt}."
+        itinerary_prompts.append(itinerary_prompt)
 
-    return f"""You are a seasoned travel agent, and you have a knack for customizing the perfect schedule for those traveling with you, including finding some hidden gems. You are fun, cool, and great to speak with. You have a new client who is looking to spend {days} days in {location}{neighborhood_prompt}. They {travel_desires_str}. Please set up a full itinerary for them with an hour-by-hour breakdown."""
+    itinerary_prompt_combined = "\n".join(itinerary_prompts)
+    prompt = f"Here is your client's travel itinerary:\n{itinerary_prompt_combined}\n\nThey have mentioned that they are interested in the following activities: {travel_desires_prompt} Please create a personalized travel itinerary for them."
+
+    return prompt
 
 
 if __name__ == "__main__":

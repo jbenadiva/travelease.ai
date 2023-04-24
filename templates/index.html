@@ -5,33 +5,54 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TravelEase</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
     <h1>TravelEase</h1>
-    <form method="POST">
-        <label for="location">Where are you going?</label>
-        <input type="text" name="location" required>
-        <br>
-        <label for="days">How long are you staying there?</label>
-        <input type="number" name="days" min="1" required>
-        <br>
-        <label for="neighborhood">Which neighborhood are you staying in? (optional)</label>
-        <input type="text" name="neighborhood">
-        <br>
-        <label for="travel_desires">How do you like to travel?</label>
-        <select name="travel_desires" multiple required>
-            <option value="love hiking">Just give me hikes baby</option>
-            <option value="museum connoisseur">Museum connoisseur</option>
-            <option value="love history">History buff</option>
-            <option value="relax">Relax, don't bother me before noon</option>
-            <option value="soak up the culture">Let me soak up the culture in peace!</option>
-        </select>
-        <br>
-        <button type="submit">Submit</button>
+    <form method="POST" id="travel-form">
+        <div id="step-1">
+    		<div id="destinations-container">
+       		 <div id="destinations">
+                <div class="destination">
+                    <label for="location">Where are you going?</label>
+                    <input type="text" name="location" required>
+                    <br>
+                    <label for="nights-1">How many nights?</label>
+                    <select name="nights[]" id="nights-1" required>
+                        {% for i in range(1, 7) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <label for="neighborhood">Which neighborhood are you staying in? (optional)</label>
+                    <input type="text" name="neighborhood">
+                    <br>
+                </div>
+    		</div>
+    		<button type="button" id="add-destination">+ Add another destination</button>
+    		<br>
+   		 <button type="button" id="next-step-1">Next</button>
+		</div>
+        <div id="step-2" class="hidden">
+            <label for="travel_desires">How do you like to travel?</label>
+            <select name="travel_desires" multiple required>
+                <option value="love hiking">Just give me hikes baby</option>
+                <option value="museum connoisseur">Museum connoisseur</option>
+                <option value="love history">History buff</option>
+                <option value="relax">Relax, don't bother me before noon</option>
+                <option value="soak up the culture">Let me soak up the culture in peace!</option>
+            </select>
+            <br>
+            <button type="submit">Submit</button>
+        </div>
     </form>
     {% if result %}
     <h2>Your Itinerary:</h2>
     <pre>{{ result }}</pre>
     {% endif %}
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
