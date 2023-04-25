@@ -5,54 +5,62 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TravelEase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3I5e7A5D5rn5A5eXJ" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        .hidden { display: none; }
-    </style>
 </head>
 <body>
-    <h1>TravelEase</h1>
-    <form method="POST" id="travel-form">
-        <div id="step-1">
-    		<div id="destinations-container">
-       		 <div id="destinations">
-                <div class="destination">
-                    <label for="location">Where are you going?</label>
-                    <input type="text" name="location" required>
-                    <br>
-                    <label for="nights-1">How many nights?</label>
-                    <select name="nights[]" id="nights-1" required>
-                        {% for i in range(1, 7) %}
-                        <option value="{{ i }}">{{ i }}</option>
-                        {% endfor %}
-                    </select>
-                    <br>
-                    <label for="neighborhood">Which neighborhood are you staying in? (optional)</label>
-                    <input type="text" name="neighborhood">
-                    <br>
+    <div class="container">
+        <h1 class="my-4 text-center">TravelEase</h1>
+        <form method="POST" id="travel-form">
+            <div id="step-1">
+                <div id="destinations-container" class="mb-3">
+                    <div id="destinations">
+                        <div class="destination">
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Where are you going?</label>
+                                <input type="text" class="form-control" name="location" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nights-1" class="form-label">How many nights?</label>
+                                <select class="form-select" name="nights[]" id="nights-1" required>
+                                    {% for i in range(1, 7) %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="neighborhood" class="form-label">Which neighborhood are you staying in? (optional)</label>
+                                <input type="text" class="form-control" name="neighborhood">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-    		</div>
-    		<button type="button" id="add-destination">+ Add another destination</button>
-    		<br>
-   		 <button type="button" id="next-step-1">Next</button>
-		</div>
-        <div id="step-2" class="hidden">
-            <label for="travel_desires">How do you like to travel?</label>
-            <select name="travel_desires" multiple required>
-                <option value="love hiking">Just give me hikes baby</option>
-                <option value="museum connoisseur">Museum connoisseur</option>
-                <option value="love history">History buff</option>
-                <option value="relax">Relax, don't bother me before noon</option>
-                <option value="soak up the culture">Let me soak up the culture in peace!</option>
-            </select>
-            <br>
-            <button type="submit">Submit</button>
-        </div>
-    </form>
-    {% if result %}
-    <h2>Your Itinerary:</h2>
-    <pre>{{ result }}</pre>
-    {% endif %}
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+                <button type="button" class="btn btn-secondary mb-3" id="add-destination">+ Add another destination</button>
+                <br>
+                <button type="button" class="btn btn-primary" id="next-step-1">Next</button>
+            </div>
+            <div id="step-2" class="hidden">
+                <div class="mb-3">
+                    <label for="travel_desires" class="form-label">How do you like to travel?</label>
+                    <select class="form-select" name="travel_desires" multiple required>
+                        <option value="love hiking">Just give me hikes baby</option>
+                        <option value="museum connoisseur">Museum connoisseur</option>
+                        <option value="love history">History buff</option>
+                        <option value="relax">Relax, don't bother me before noon</option>
+                        <option value="soak up the culture">Let me soak up the culture in peace!</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+        </form>
+        {% if result %}
+        <h2 class2>Your Itinerary:</h2>
+<pre>{{ result }}</pre>
+{% endif %}
+</div>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBud7M4+rzstRz6iCP1VTC3xg4w3YqSo3Jt3h9M2/hgyW5C5" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+
 </body>
 </html>
