@@ -8,6 +8,11 @@ body {
     background-attachment: fixed;
 }
 
+.result-text {
+    font-family: "Segoe UI", Arial, sans-serif;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
 .container {
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
