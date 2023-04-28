@@ -1,3 +1,92 @@
+:root {
+  --primary-color: #182825;
+  --secondary-color: #016FB9;
+  --tertiary-color: #22AED1;
+}
+
+.result-header {
+  text-decoration: underline;
+}
+.custom-input {
+    border: 2px solid #6c757d;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s;
+}
+.previous-input {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.custom-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Custom Dropdown Menu */
+.custom-select {
+    border: 2px solid #6c757d;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s;
+}
+
+.custom-select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+.btn-primary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--tertiary-color);
+  border-color: var(--tertiary-color);
+}
+
+.btn-secondary {
+  background-color: var(--tertiary-color);
+  border-color: var(--tertiary-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-custom {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-custom:hover {
+  background-color: var(--tertiary-color);
+  border-color: var(--tertiary-color);
+}
+
+/* Custom Button */
+.btn-custom {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.btn-custom:hover {
+    background-color: #0056b3;
+}
+
 body {
     font-family: Arial, sans-serif;
     max-width: 800px;
@@ -47,7 +136,7 @@ body {
 }
 
 .destination-group {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 #selected-desires {
