@@ -41,7 +41,8 @@ def generate_prompt(locations, nights, travel_desires):
               f"speak with. You have a new client and want to make a great impression on what an creative travel "
               f"agent you are with very specific recommendations with specific bars and restauarants if possible. Here is their itinerary:\n{itinerary}\n"
               f" As for their travel preferences, they enjoy {preferences}."
-              f" Please generate a very detailed, very specific in terms of locations and restaurants, and fun itinerary for your new client!")
+              f" Please generate a very detailed, very specific in terms of locations and restaurants, and personalized itinerary for your new client!"
+              f" Please keep in mind travel times and try to optimize their time.")
 
     return prompt
 
