@@ -2,72 +2,80 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TravelEase</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3I5e7A5D5rn5A5eXJ" crossorigin="anonymous">
+    <title>TravelEase.ai</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </head>
 <body>
     <div class="container">
-        <h1 class="my-4 text-center">TravelEase</h1>
-        <form method="POST" id="travel-form">
-            <div id="step-1">
-                <div id="destinations-container" class="mb-3">
-                    <div id="destinations">
-                        <div class="destination">
-                            <!-- Input Field -->
-                            <div class="form-group mb-3">
-                                <label for="location" class="form-label">Where are you going?</label>
-                                <input type="text" class="form-control custom-input" name="location" required>
-                            </div>
-                            <!-- Dropdown Menu -->
-                            <div class="form-group mb-3">
-                                <label for="nights-1" class="form-label">How many nights?</label>
-                                <select class="form-select custom-select" name="nights[]" id="nights-1" required>
-                                    {% for i in range(1, 7) %}
-                                    <option value="{{ i }}">{{ i }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <!-- Input Field -->
-                            <div class="form-group mb-3">
-                                <label for="neighborhood" class="form-label">Which neighborhood are you staying in? (optional)</label>
-                                <input type="text" class="form-control custom-input" name="neighborhood">
-                            </div>
-                        </div>
-                    </div>
+        <h1>TravelEase.ai</h1>
+        <form method="POST" action="{{ url_for('index') }}" id="travel-form">
+            <div id="destinations">
+                <!-- Wrap each form element in a div with a Bootstrap class of .form-group for proper spacing -->
+                <div class="form-group destination">
+                    <label for="location-1">Where are you going?</label>
+                    <input type="text" name="locations" id="location-1" class="form-control" required>
+                    <label for="nights-1">How many nights are you staying in <span class="destination-name"></span>?</label>
+                    <select name="nights" id="nights-1" class="form-control" required>
+                        <option value="1">1 night</option>
+                        <option value="2">2 nights</option>
+                        <option value="3">3 nights</option>
+                        <option value="4">4 nights</option>
+                        <option value="5">5 nights</option>
+                        <option value="6">6 nights</option>
+                        <option value="7">7+ nights</option>
+                    </select>
                 </div>
-                <!-- Button -->
-                <button type="button" class="btn btn-custom mb-3" id="add-destination">+ Add another destination</button>
-                <br>
-                <!-- Button -->
-                <button type="button" class="btn btn-custom" id="next-step-1">Next</button>
             </div>
-           <div id="step-2" class="hidden">
-    <h3>How do you like to travel?</h3>
-    <div id="travel-options">
-        <button type="button" class="btn btn-outline-primary travel-option" data-value="love hiking">+ Just give me hikes baby</button>
-        <button type="button" class="btn btn-outline-primary travel-option" data-value="museum connoisseur">+ Museum connoisseur</button>
-        <button type="button" class="btn btn-outline-primary travel-option" data-value="love history">+ History buff</button>
-        <button type="button" class="btn btn-outline-primary travel-option" data-value="relax">+ Relax, don't bother me before noon</button>
-        <button type="button" class="btn btn-outline-primary travel-option" data-value="soak up the culture">+ Let me soak up the culture in peace!</button>
+            <button type="button" id="add-destination" class="btn btn-secondary">+ Add another destination</button>
+
+            <div id="travel-preferences" class="mt-3">
+                <p>How do you like to travel?</p>
+                <!-- Replace buttons with checkboxes -->
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="travel_desires" id="preference1" value="just lying on the beach">
+                    <label class="form-check-label" for="preference1">I like to lie on the beach and not do anything.</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="travel_desires" id="preference2" value="as much museums as possible">
+                    <label class="form-check-label" for="preference2">I love museums! As much history as possible!</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="travel_desires" id="preference3" value="culture, restaurants and cool places">
+                    <label class="form-check-label" for="preference3">I want to soak up the "culture"</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="travel_desires" id="preference4" value="as much physical activity and hikes as possible">
+                    <label class="form-check-label" for="preference4">Give me hikes, baby!!</label>
+                </div>
+                 <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="travel_desires" id="preference5" value="spritual and meditative experiences">
+                    <label class="form-check-label" for="preference5">Meditation and yoga...I am the zenmaster</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="travel_desires" id="preference5" value=" only nature activities">
+                    <label class="form-check-label" for="preference5">Nature, nature, nature!</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Generate Travel Itinerary</button>
+        </form>
+        <div id="spinner" class="d-none">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
     </div>
-    <input type="hidden" name="travel_desires" id="travel-desires-value" required>
-    <h4 class="mt-3">Your travel preferences:</h4>
-    <ul id="selected-preferences"></ul>
-    <button type="submit" class="btn btn-success">Submit</button>
 </div>
-    </form>
-    {% if result %}
-<div class="container mt-3">
-  <h2 class="result-header">Your Personalized Itinerary</h2>
-  <div class="result-text">{{ result }}</div>
-</div>
+        {% if result %}
+    <div class="result mt-5">
+        <h2>Your Customized Itinerary:</h2>
+        <pre class="itinerary-result">{{ result }}</pre>
+    </div>
 {% endif %}
 </div>
-<script src="{{ url_for('static', filename='script.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBud7M4+rzstRz6iCP1VTC3xg4w3YqSo3Jt3h9M2/hgyW5C5" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+
 </body>
 </html>
