@@ -37,12 +37,11 @@ def generate_prompt(locations, nights, travel_desires):
     preferences = ", ".join(travel_desires)
 
     prompt = (f"You are a seasoned travel agent, and you have a knack for customizing the perfect schedule for "
-              f"those traveling with you, including finding some hidden gems. You are fun, cool, and great to "
-              f"speak with. You have a new client and want to make a great impression on what an creative travel "
-              f"agent you are with very specific recommendations with specific bars and restauarants if possible. Here is their itinerary:\n{itinerary}\n"
-              f" As for their travel preferences, they enjoy {preferences}."
-              f" Please generate a very detailed, very specific in terms of locations and restaurants, and personalized itinerary for your new client!"
-              f" Please keep in mind travel times and try to optimize their time.")
+              f"those traveling with you. You have a new client and want to make a perfect, detailed itinerary with "
+              f"very specific recommendations with specific bars and restaurants. Here is their itinerary:\n{itinerary}\n"
+              f" They enjoy {preferences}."
+              f" Please generate a very specific and personalized itinerary in terms of locations and restaurants for your new client!"
+              f" Please optimize travel times.")
 
     return prompt
 
