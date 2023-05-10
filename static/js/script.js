@@ -34,8 +34,9 @@ $(document).ready(function() {
       alert("Please select at least one travel preference.");
       return false;
     }
+    // Display the loading message.
+    $("#loading-message").removeClass("d-none");
+    // Hide the spinner if it's still visible.
+    $("#spinner").addClass("d-none");
   });
-  $("#travel-form").on("submit", function() {
-    $("#spinner").removeClass("d-none");
-});
 });
