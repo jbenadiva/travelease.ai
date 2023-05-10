@@ -27,7 +27,7 @@ app.config.update(
     CELERY_RESULT_BACKEND=os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
 )
 
-celery = make_celery(app)
+celery = make_celery('myapp', app.config['CELERY_BROKER_URL'])
 
 @app.route("/", methods=("GET", "POST"))
 def index():
