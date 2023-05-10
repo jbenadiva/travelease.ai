@@ -5,10 +5,29 @@ load_dotenv()
 
 import openai
 from flask import Flask, redirect, render_template, request, url_for
+from celery_config import Celery
 
 app = Flask(__name__)
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
+def make_celery(app):
+    celery = Celery(app.import_name, broker=app.config['CELERY_BROKER_URL'])
+    celery.conf.update(app.config)
+    TaskBase = celery.Task
+    class ContextTask(TaskBase):
+        abstract = True
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return TaskBase.__call__(self, *args, **kwargs)
+    celery.Task = ContextTask
+    return celery
+
+app.config.update(
+    CELERY_BROKER_URL=os.environ.get('REDIS_URL', 'redis://localhost:6379/0'),
+    CELERY_RESULT_BACKEND=os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+)
+
+celery = make_celery(app)
 
 @app.route("/", methods=("GET", "POST"))
 def index():
@@ -20,28 +39,34 @@ def index():
 
         prompt = generate_prompt(locations, nights, travel_desires)
         print(f"Generated Prompt: {prompt}")  # Print the generated prompt to the console
-        response = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=prompt,
-            temperature=0.7,
-            max_tokens=3000,  # Increase this value to allow longer responses
-        )
-        result = response.choices[0].text.strip()
-        return render_template("index.html", result=result)
+        openai_task.delay(prompt)
+        return "Your request is being processed. Please check back later for the result.", 202
 
     return render_template("index.html")
 
 
+@celery.task()
+def openai_task(prompt):
+    response = openai.ChatCompletion.create(
+        model="gpt-4",  # use the new chat model
+        messages=[
+            {"role": "system", "content": "You are a seasoned travel agent with a knack for creating detailed and personalized travel itineraries."},
+            {"role": "user", "content": prompt},
+        ],
+    )
+    result = response.choices[0].message['content'].strip()
+    # Store the result somewhere like a database or a cache for retrieval
+
+
 def generate_prompt(locations, nights, travel_desires):
-    itinerary = "\n".join([f"They are travelling to {loc} for {night} nights" for loc, night in zip(locations, nights)])
+    itinerary = "\n".join([f"I'm travelling to {loc} for {night} nights" for loc, night in zip(locations, nights)])
     preferences = ", ".join(travel_desires)
 
-    prompt = (f"You are a seasoned travel agent, and you have a knack for customizing the perfect schedule for "
-              f"those traveling with you. You have a new client and want to make a perfect, detailed itinerary with "
-              f"very specific recommendations with specific bars and restaurants. Here is their itinerary:\n{itinerary}\n"
-              f" They enjoy {preferences}."
-              f" Please generate a very specific and personalized itinerary in terms of locations and restaurants for your new client!"
-              f" Please optimize travel times.")
+    prompt = (f"{itinerary}. "
+              f"I enjoy {preferences}. "
+              f"Could you please generate a very specific and personalized itinerary for me, "
+              f"including some hidden gems, specific bars, and restaurants? "
+              f"Please also consider travel times to optimize my schedule.")
 
     return prompt
 

@@ -20,6 +20,27 @@
         a.appendChild(r);
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
 </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(function () {
+    function fetchStatus(task_id) {
+        $.getJSON('/task/' + task_id, function (data) {
+            if (data.state == 'PENDING') {
+                // The task is still running
+                setTimeout(function () {
+                    fetchStatus(task_id);
+                }, 1000);
+            } else {
+                // The task has finished
+                alert('Result: ' + data.result);
+            }
+        });
+    }
+
+    var task_id = "{{ task_id }}";  // You need to pass the task_id from your Flask view
+    fetchStatus(task_id);
+});
+</script>
 </head>
 <body>
     <div class="container">
