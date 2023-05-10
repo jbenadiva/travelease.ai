@@ -1,18 +1,18 @@
 import os
 
 from dotenv import load_dotenv
+from flask import Flask, redirect, render_template, request, url_for
+from celery import Celery
+
 load_dotenv()
 
 import openai
-from flask import Flask, redirect, render_template, request, url_for
-from celery_config import Celery
 
 app = Flask(__name__)
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
-def make_celery(app):
-    celery = Celery(app.import_name, broker=app.config['CELERY_BROKER_URL'])
-    celery.conf.update(app.config)
+def make_celery(app_name, broker):
+    celery = Celery(app_name, broker=broker)
     TaskBase = celery.Task
     class ContextTask(TaskBase):
         abstract = True
