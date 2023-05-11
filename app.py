@@ -1,9 +1,14 @@
 import os
 import redis
+import logging
 
 from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, request, url_for, jsonify
 from celery import Celery, states
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -87,14 +92,14 @@ def openai_task(self, prompt):
                 {"role": "user", "content": prompt},
             ],
         )
-        print("API call completed. Processing response...")
+        logger.info("API call completed. Processing response...")
         result = response.choices[0].message['content'].strip()
-        print("Response processed. Storing result in Redis...")
+        logger.info("Response processed. Storing result in Redis...")
         # Store the result in Redis
         r.set(self.request.id, result)
-        print("Result stored in Redis. Task completed.")
+        logger.info("Result stored in Redis. Task completed.")
     except Exception as e:
-        print(f"An error occurred in the task: {e}")
+        logger.error(f"An error occurred in the task: {e}")
         raise
 
 
@@ -126,7 +131,7 @@ if __name__ == "__main__":
         r = redis.from_url(os.environ.get('REDIS_URL', 'redis://localhost:6379/0'))
         r.set('test', 'test_value')
         value = r.get('test')
-        print(f"Redis test value: {value}")
+        logger.info(f"Redis test value: {value}")
     except Exception as e:
-        print(f"Error connecting to Redis: {e}")
+        logger.error(f"Error connecting to Redis: {e}")
     app.run()
