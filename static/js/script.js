@@ -41,8 +41,6 @@ $(document).ready(function() {
 
     // Display the loading message.
     $("#loading-message").removeClass("d-none");
-    // Display the loading message.
-    $("#loading-message").removeClass("d-none");
     // Hide the spinner if it's still visible.
     $("#spinner").addClass("d-none");
     // Post the form data using AJAX
@@ -87,7 +85,7 @@ function fetchResult(task_id) {
 
     // Display the result
     $(".result").removeClass("d-none");
-    $(".itinerary-result").text(data);
+    $(".itinerary-result").html(data.result.replace(/\n/g, "<br>")); // Replace '\n' with '<br>'
   }).fail(function() {
     // The request itself failed, display an error message
     $("#loading-message").html("An error occurred while fetching the result. Please try again.");
