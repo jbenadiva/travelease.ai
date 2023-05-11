@@ -14,14 +14,19 @@ openai.api_key = os.environ["OPENAI_API_KEY"]
 redis_url = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 r = redis.from_url(redis_url)
 
-def make_celery(app_name, broker):
-    celery = Celery(app_name, broker=broker)
-    TaskBase = celery.Task
-    class ContextTask(TaskBase):
-        abstract = True
+def make_celery(app):
+    celery = Celery(
+        app.import_name,
+        backend=app.config['CELERY_RESULT_BACKEND'],
+        broker=app.config['CELERY_BROKER_URL']
+    )
+    celery.conf.update(app.config)
+
+    class ContextTask(celery.Task):
         def __call__(self, *args, **kwargs):
             with app.app_context():
-                return TaskBase.__call__(self, *args, **kwargs)
+                return self.run(*args, **kwargs)
+
     celery.Task = ContextTask
     return celery
 
@@ -30,7 +35,7 @@ app.config.update(
     CELERY_RESULT_BACKEND=os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
 )
 
-celery = make_celery('myapp', app.config['CELERY_BROKER_URL'])
+celery = make_celery(app)
 
 @app.route("/", methods=("GET", "POST"))
 def index():
