@@ -9,6 +9,7 @@ from celery import Celery, states
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+logger.propagate = True
 
 load_dotenv()
 
@@ -44,6 +45,7 @@ celery = make_celery(app)
 
 @app.route("/", methods=("GET", "POST"))
 def index():
+    logger.info("Handling a request to /")
     if request.method == "POST":
         locations = request.form.getlist("locations")
         nights = request.form.getlist("nights")
