@@ -79,6 +79,7 @@ def taskstatus(task_id):
 @celery.task(bind=True)
 def openai_task(self, prompt):
     try:
+        print("Starting API call...")
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
@@ -86,13 +87,16 @@ def openai_task(self, prompt):
                 {"role": "user", "content": prompt},
             ],
         )
+        print("API call completed. Processing response...")
         result = response.choices[0].message['content'].strip()
+        print("Response processed. Storing result in Redis...")
         # Store the result in Redis
         r.set(self.request.id, result)
+        print("Result stored in Redis. Task completed.")
     except Exception as e:
-        # Log the exception and update task state to FAILURE
-        self.update_state(state=states.FAILURE, meta=str(e))
+        print(f"An error occurred in the task: {e}")
         raise
+
 
 @app.route("/result/<task_id>")
 def result(task_id):
@@ -118,4 +122,11 @@ def generate_prompt(locations, nights, travel_desires):
 
 
 if __name__ == "__main__":
+    try:
+        r = redis.from_url(os.environ.get('REDIS_URL', 'redis://localhost:6379/0'))
+        r.set('test', 'test_value')
+        value = r.get('test')
+        print(f"Redis test value: {value}")
+    except Exception as e:
+        print(f"Error connecting to Redis: {e}")
     app.run()
