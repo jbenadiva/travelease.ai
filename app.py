@@ -2,7 +2,7 @@ import os
 import redis
 
 from dotenv import load_dotenv
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, redirect, render_template, request, url_for, jsonify
 from celery import Celery
 
 load_dotenv()
@@ -48,7 +48,7 @@ def index():
         task = openai_task.delay(prompt)
 
         # Return the task id
-        return {"task_id": task.id}, 202
+        return jsonify({"task_id": task.id}), 202
 
     return render_template("index.html")
 

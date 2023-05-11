@@ -29,16 +29,8 @@ $(document).ready(function() {
     }).appendTo("#travel-form");
   });
 
-  $("#travel-form").on("submit", function() {
-    if ($("input[name='travel_desires']").length === 0) {
-      alert("Please select at least one travel preference.");
-      return false;
-    }
-    // Display the loading message.
-    $("#loading-message").removeClass("d-none");
-    // Hide the spinner if it's still visible.
-    $("#spinner").addClass("d-none");
-  });
+
+
   $("#travel-form").on("submit", function(event) {
     event.preventDefault();  // Prevent the form from submitting normally
 
@@ -49,7 +41,10 @@ $(document).ready(function() {
 
     // Display the loading message.
     $("#loading-message").removeClass("d-none");
-
+    // Display the loading message.
+    $("#loading-message").removeClass("d-none");
+    // Hide the spinner if it's still visible.
+    $("#spinner").addClass("d-none");
     // Post the form data using AJAX
     $.ajax({
       type: "POST",
@@ -60,7 +55,6 @@ $(document).ready(function() {
         pollStatus(response.task_id);
       }
     });
-  });
 });
 
 function pollStatus(task_id) {
