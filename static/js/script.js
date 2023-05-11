@@ -67,10 +67,16 @@ function pollStatus(task_id) {
     } else if (data.state === "SUCCESS") {
       // The task has finished, fetch the result
       fetchResult(task_id);
+    } else if (data.state === "FAILURE") {
+      // The task has failed, display an error message
+      $("#loading-message").html("An error occurred while generating your itinerary: " + data.status);
     } else {
-      // Something went wrong, display an error message
-      $("#loading-message").html("An error occurred while generating your itinerary. Please try again.");
+      // Something unexpected happened, display an error message
+      $("#loading-message").html("An unexpected error occurred while generating your itinerary. Please try again.");
     }
+  }).fail(function() {
+    // The request itself failed, display an error message
+    $("#loading-message").html("An error occurred while checking the task status. Please try again.");
   });
 }
 
@@ -82,6 +88,9 @@ function fetchResult(task_id) {
     // Display the result
     $(".result").removeClass("d-none");
     $(".itinerary-result").text(data);
+  }).fail(function() {
+    // The request itself failed, display an error message
+    $("#loading-message").html("An error occurred while fetching the result. Please try again.");
   });
 }
 });

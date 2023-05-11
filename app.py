@@ -3,7 +3,7 @@ import redis
 
 from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, request, url_for, jsonify
-from celery import Celery
+from celery import Celery, states
 
 load_dotenv()
 
@@ -60,7 +60,7 @@ def taskstatus(task_id):
             'state': task.state,
             'status': 'Pending...'
         }
-    elif task.state != 'FAILURE':
+    elif task.state == 'SUCCESS':
         response = {
             'state': task.state,
             'status': task.info.get('status', '')
@@ -78,16 +78,21 @@ def taskstatus(task_id):
 
 @celery.task(bind=True)
 def openai_task(self, prompt):
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[
-            {"role": "system", "content": "You are a seasoned travel agent with a knack for creating detailed and personalized travel itineraries."},
-            {"role": "user", "content": prompt},
-        ],
-    )
-    result = response.choices[0].message['content'].strip()
-    # Store the result in Redis
-    r.set(self.request.id, result)
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a seasoned travel agent with a knack for creating detailed and personalized travel itineraries."},
+                {"role": "user", "content": prompt},
+            ],
+        )
+        result = response.choices[0].message['content'].strip()
+        # Store the result in Redis
+        r.set(self.request.id, result)
+    except Exception as e:
+        # Log the exception and update task state to FAILURE
+        self.update_state(state=states.FAILURE, meta=str(e))
+        raise
 
 @app.route("/result/<task_id>")
 def result(task_id):
