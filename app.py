@@ -54,8 +54,11 @@ def index():
         prompt = generate_prompt(locations, nights, travel_desires)
         task = openai_task.delay(prompt)
 
+        task_id = task.id
+        logger.info("Created task with ID: %s", task_id)
+
         # Return the task id
-        return jsonify({"task_id": task.id}), 202
+        return jsonify({"task_id": task_id}), 202
 
     return render_template("index.html")
 
@@ -70,17 +73,15 @@ def taskstatus(task_id):
     elif task.state == 'SUCCESS':
         response = {
             'state': task.state,
-            'status': task.info.get('status', '')
+            'result': task.result  # Get the result from the task
         }
-        if 'result' in task.info:
-            response['result'] = task.info['result']
     else:
         # something went wrong in the background job
         response = {
             'state': task.state,
             'status': str(task.info),  # this is the exception raised
         }
-    return response
+    return jsonify(response)  # Make sure to jsonify the response
 
 
 @celery.task(bind=True)
@@ -97,9 +98,13 @@ def openai_task(self, prompt):
         logger.info("API call completed. Processing response...")
         result = response.choices[0].message['content'].strip()
         logger.info("Response processed. Storing result in Redis...")
+        task_id = self.request.id
+        logger.info("Task ID: %s", task_id)
+
         # Store the result in Redis
         r.set(self.request.id, result)
         logger.info("Result stored in Redis. Task completed.")
+        logger.info("Result: %s", result)
     except Exception as e:
         logger.error(f"An error occurred in the task: {e}")
         raise
