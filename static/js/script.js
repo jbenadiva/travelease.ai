@@ -85,7 +85,7 @@ function fetchResult(task_id) {
 
     // Display the result
     $(".result").removeClass("d-none");
-    $(".itinerary-result").html(data.result.replace(/\n/g, "<br>")); // Replace '\n' with '<br>'
+    $(".itinerary-result").html(data.replace(/\n/g, "<br>")); // Replace '\n' with '<br>'
   }).fail(function() {
     // The request itself failed, display an error message
     $("#loading-message").html("An error occurred while fetching the result. Please try again.");
