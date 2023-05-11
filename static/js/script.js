@@ -69,7 +69,7 @@ function pollStatus(task_id) {
       // The task is still running, poll again after 1 second
       setTimeout(function() {
         pollStatus(task_id);
-      }, 1000);
+      }, 5000);
     } else if (data.state === "SUCCESS") {
       // The task has finished, fetch the result
       fetchResult(task_id);

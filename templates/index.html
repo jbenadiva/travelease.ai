@@ -24,7 +24,7 @@
 <script>
 $(function () {
     function fetchStatus(task_id) {
-        $.getJSON('/task/' + task_id, function (data) {
+        $.getJSON('/status/' + task_id, function (data) {
             if (data.state == 'PENDING') {
                 // The task is still running
                 setTimeout(function () {
