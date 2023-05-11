@@ -39,4 +39,54 @@ $(document).ready(function() {
     // Hide the spinner if it's still visible.
     $("#spinner").addClass("d-none");
   });
+  $("#travel-form").on("submit", function(event) {
+    event.preventDefault();  // Prevent the form from submitting normally
+
+    if ($("input[name='travel_desires']").length === 0) {
+      alert("Please select at least one travel preference.");
+      return false;
+    }
+
+    // Display the loading message.
+    $("#loading-message").removeClass("d-none");
+
+    // Post the form data using AJAX
+    $.ajax({
+      type: "POST",
+      url: "/",
+      data: $(this).serialize(),
+      success: function(response) {
+        // Start polling the task status
+        pollStatus(response.task_id);
+      }
+    });
+  });
 });
+
+function pollStatus(task_id) {
+  $.getJSON("/status/" + task_id, function(data) {
+    if (data.state === "PENDING") {
+      // The task is still running, poll again after 1 second
+      setTimeout(function() {
+        pollStatus(task_id);
+      }, 1000);
+    } else if (data.state === "SUCCESS") {
+      // The task has finished, fetch the result
+      fetchResult(task_id);
+    } else {
+      // Something went wrong, display an error message
+      $("#loading-message").html("An error occurred while generating your itinerary. Please try again.");
+    }
+  });
+}
+
+function fetchResult(task_id) {
+  $.get("/result/" + task_id, function(data) {
+    // Hide the loading message
+    $("#loading-message").addClass("d-none");
+
+    // Display the result
+    $(".result").removeClass("d-none");
+    $(".itinerary-result").text(data);
+  });
+}

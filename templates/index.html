@@ -102,11 +102,11 @@ $(function () {
         <span class="sr-only"></span>
     </div>
 </div>
-        {% if result %}
-    <div class="result mt-5">
-        <h2>Your Customized Itinerary:</h2>
-        <pre class="itinerary-result">{{ result }}</pre>
-    </div>
+{% if result %}
+<div class="result mt-5 d-none">
+  <h2>Your Customized Itinerary:</h2>
+  <pre class="itinerary-result">{{ result }}</pre>
+</div>
 {% endif %}
 </div>
 
