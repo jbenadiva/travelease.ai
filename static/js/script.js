@@ -84,3 +84,4 @@ function fetchResult(task_id) {
     $(".itinerary-result").text(data);
   });
 }
+});
