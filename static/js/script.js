@@ -1,15 +1,18 @@
 $(document).ready(function() {
   let destinationCount = 1;
 
-  $("#add-destination").on("click", function() {
-    if (destinationCount < 4) {
+$("#add-destination").on("click", function() {
+    if (destinationCount < 4) {  // Increase this number if you want to add more destinations
       const newDestination = $(".destination:first").clone();
-      newDestination.find("input").attr("id", `location-${destinationCount + 1}`);
-      newDestination.find("select").attr("id", `nights-${destinationCount + 1}`);
+      newDestination.find("input").attr("id", `location-${destinationCount + 1}`).attr("name", "locations");
+      newDestination.find(".night-selection select").attr("id", `nights-${destinationCount + 1}`).attr("name", "nights");
       newDestination.find("label[for]").each(function() {
-         $(this).attr("for", function(i, currentValue) {
+        $(this).attr("for", function(i, currentValue) {
           return currentValue.replace(/\d/, destinationCount + 1);
         });
+        if (destinationCount > 0) {
+          $(this).text(`Destination ${destinationCount + 1}:`);
+        }
       });
       $("#destinations").append(newDestination);
       destinationCount++;
@@ -17,6 +20,33 @@ $(document).ready(function() {
       alert("You can add up to 4 destinations.");
     }
   });
+
+  let nextButtonState = 0;
+
+  $('#next').on('click', function() {
+  switch (nextButtonState) {
+    case 0:
+      // Switch from destinations input to nights selection
+      $('.destination').each(function() {
+        const location = $(this).find('input').val();
+        $(this).find('.destination-name').text(location);
+      });
+      $('.destination .form-group:not(.night-selection)').addClass('d-none');
+      $('.night-selection').removeClass('d-none');
+      $('#add-destination').addClass('d-none');
+      nextButtonState++;
+      break;
+    case 1:
+      // Switch from nights selection to travel preferences
+      $('#destinations').addClass('d-none');
+      $('#travel-preferences').removeClass('d-none');
+      $('#generate-itinerary').removeClass('d-none');
+      $(this).addClass('d-none'); // Hide the "Next" button
+      break;
+    default:
+      break;
+  }
+});
 
   $(".preference-button").on("click", function() {
     const preference = $(this).text();
@@ -28,6 +58,7 @@ $(document).ready(function() {
       value: preference
     }).appendTo("#travel-form");
   });
+
 
 
 

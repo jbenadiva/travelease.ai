@@ -52,6 +52,7 @@ def index():
         travel_desires = request.form.getlist("travel_desires")
 
         prompt = generate_prompt(locations, nights, travel_desires)
+        logger.info(f"Generated prompt: {prompt}")
         task = openai_task.delay(prompt)
 
         task_id = task.id
@@ -121,7 +122,7 @@ def result(task_id):
         return result.decode()  # decode bytes to string before returning
 
 def generate_prompt(locations, nights, travel_desires):
-    itinerary = "\n".join([f"I'm travelling to {loc} for {night} nights" for loc, night in zip(locations, nights)])
+    itinerary = "\n".join([f"I'm traveling to {loc} for {night} nights" for loc, night in zip(locations, nights)])
     preferences = ", ".join(travel_desires)
 
     prompt = (f"{itinerary}. "

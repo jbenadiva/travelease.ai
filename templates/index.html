@@ -33,13 +33,16 @@
         <!-- Updating the headers -->
         <h1 class="main-header">Travelease.AI</h1>
         <p class="sub-header">Tell us about your travel plans and we'll generate a full itinerary for you</p>
-        <form method="POST" action="{{ url_for('index') }}" id="travel-form">
-            <div id="destinations">
-                <!-- Wrap each form element in a div with a Bootstrap class of .form-group for proper spacing -->
-                <div class="form-group destination">
-            <label for="location-1" class="question">Where are you going?</label>
-            <input type="text" name="locations" id="location-1" class="form-control input-field" required>
-                    <label for="nights-1">How many nights are you staying in <span class="destination-name"></span>?</label>
+<form method="POST" action="{{ url_for('index') }}" id="travel-form">
+        <div id="destinations">
+            <!-- Wrap each form element in a div with a Bootstrap class of .form-group for proper spacing -->
+            <div class="destination">
+                <div class="form-group">
+                    <label for="location-1">Where are you going?</label>
+                    <input type="text" class="form-control" id="location-1" name="locations" required>
+                </div>
+                <div class="form-group night-selection d-none">
+                    <label>How many nights are you staying in <span class="destination-name"></span>?</label>
                     <select name="nights" id="nights-1" class="form-control" required>
                         <option value="1">1 night</option>
                         <option value="2">2 nights</option>
@@ -51,40 +54,41 @@
                     </select>
                 </div>
             </div>
-           <button type="button" id="add-destination" class="btn btn-add">+ Add another destination</button>
+        </div>
+        <button type="button" id="add-destination" class="btn btn-add">+ Add another destination</button>
+        <button type="button" id="next" class="btn btn-next">Next</button>
 
 
-
-            <div id="travel-preferences" class="mt-3">
+            <div id="travel-preferences" class="mt-3 d-none">
                 <p>How do you like to travel?</p>
                 <!-- Replace buttons with checkboxes -->
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="travel_desires" id="preference1" value="just lying on the beach">
-                    <label class="form-check-label" for="preference1">I like to lie on the beach and not do anything.</label>
+                    <label class="form-check-label" for="preference1">🏖️ I like to lie on the beach and not do anything </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="travel_desires" id="preference2" value="as much museums as possible">
-                    <label class="form-check-label" for="preference2">I love museums! As much history as possible!</label>
+                    <label class="form-check-label" for="preference2">🏺 I love museums! As much history as possible!</label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="travel_desires" id="preference3" value="culture, restaurants and cool places">
-                    <label class="form-check-label" for="preference3">I want to soak up the "culture"</label>
+                    <label class="form-check-label" for="preference3">🎭 I want to soak up the "culture"</label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="travel_desires" id="preference4" value="as much physical activity and hikes as possible">
-                    <label class="form-check-label" for="preference4">Give me hikes, baby!!</label>
+                    <label class="form-check-label" for="preference4">🌄 Give me hikes, baby!!</label>
                 </div>
                  <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="travel_desires" id="preference5" value="spritual and meditative experiences">
-                    <label class="form-check-label" for="preference5">Meditation and yoga...I am the zenmaster</label>
+                    <label class="form-check-label" for="preference5">🧘Meditation and yoga...I am the zenmaster</label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="travel_desires" id="preference5" value=" only nature activities">
-                    <label class="form-check-label" for="preference5">Nature, nature, nature!</label>
+                    <label class="form-check-label" for="preference5">🧗Nature, nature, nature! </label>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary mt-3">Generate Travel Itinerary</button>
+        <button type="submit" class="btn btn-primary mt-3 d-none" id="generate-itinerary">Generate Travel Itinerary</button>
         </form>
  <div id="loading-message" class="text-center d-none">
     <h4 class="interesting-text">Thank you for submitting your travel itinerary! We are currently looking for the best restaurants and attractions for your trip...sit tight and please wait 2-3 minutes while we finalize your itinerary</h4>
