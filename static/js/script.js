@@ -49,14 +49,16 @@ $(document).ready(function() {
       url: "/",
       data: $(this).serialize(),
       success: function(response) {
-        // Start polling the task status
-        pollStatus(response.task_id);
-      }
+  console.log("Form submission response:", response);
+  // Start polling the task status
+  pollStatus(response.task_id);
+}
     });
 });
 
 function pollStatus(task_id) {
   $.getJSON("/status/" + task_id, function(data) {
+  console.log("Poll status response:", data);
     if (data.state === "PENDING") {
       // The task is still running, poll again after 1 second
       setTimeout(function() {
@@ -80,6 +82,7 @@ function pollStatus(task_id) {
 
 function fetchResult(task_id) {
   $.get("/result/" + task_id, function(data) {
+    console.log("Fetch result response:", data);
     // Hide the loading message
     $("#loading-message").addClass("d-none");
 
