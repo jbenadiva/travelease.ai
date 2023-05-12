@@ -99,8 +99,9 @@ button.preference-button {
 }
 
 .interesting-text {
-    color: #32a852; /* Replace this with the color you want */
-    font-family: 'Comic Sans MS', cursive, sans-serif; /* Replace this with the font you want */
+    color: #88BB92;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 14px;
     font-style: italic;
 }
 
