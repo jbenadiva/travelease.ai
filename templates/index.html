@@ -76,17 +76,14 @@
             <button type="submit" class="btn btn-primary mt-3">Generate Travel Itinerary</button>
         </form>
  <div id="loading-message" class="text-center d-none">
-    <h4 class="text-primary">Thank you for submitting your travel itinerary! We are currently looking for the best restaurants and attractions for your trip...sit tight and please wait 2-3 minutes while we finalize your itinerary</h4>
+    <h4 class="interesting-text">Thank you for submitting your travel itinerary! We are currently looking for the best restaurants and attractions for your trip...sit tight and please wait 2-3 minutes while we finalize your itinerary</h4>
     <div class="spinner-border text-primary" role="status">
         <span class="sr-only"></span>
     </div>
 </div>
-{% if result %}
 <div class="result mt-5 d-none">
   <h2>Your Customized Itinerary:</h2>
-  <pre class="itinerary-result">{{ result }}</pre>
-</div>
-{% endif %}
+  <pre class="itinerary-result"></pre>
 </div>
 
 </body>

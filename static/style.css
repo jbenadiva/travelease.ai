@@ -98,6 +98,12 @@ button.preference-button {
     margin-bottom: 0.5rem;
 }
 
+.interesting-text {
+    color: #32a852; /* Replace this with the color you want */
+    font-family: 'Comic Sans MS', cursive, sans-serif; /* Replace this with the font you want */
+    font-style: italic;
+}
+
 #selected-preferences ul li:hover {
     background-color: #f1f1f1;
 }
