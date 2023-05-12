@@ -6,14 +6,71 @@
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-    color: #333;
-    background-image: url('/static/images/background.jpg');
-    background-size: cover;
-    background-position: center;
+    background-color: #B3EFDC; /* Updating the background color */
 }
+
+.logo {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 0;
+}
+
+.logo img {
+    width: 150px; /* You can adjust this as necessary */
+    height: auto;
+}
+
+.main-header {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 48px;
+    font-weight: bold;
+    color: #333;
+}
+
+.sub-header {
+    text-align: center;
+    font-style: italic;
+    color: #333; /* Choose a color that balances well with the black and the background color */
+    padding-bottom: 2rem;
+}
+
+.question {
+    color: #333;
+    font-weight: bold;
+}
+
+.input-field {
+    border: none;
+    border-bottom: 3px solid #5F5F5F;
+    border-radius: 0;
+    background: transparent;
+}
+
+.btn-add {
+    background-color: #D5F6EB;
+    border-radius: 30px;
+    margin-top:10px;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.3s;
+}
+
+.btn-add:hover {
+    background-color: #B3DFC7; /* Darken the color on hover */
+}
+
+.btn-next {
+    background-color: #5F5F5F;
+    border-radius: 30px;
+    color: #D5F6EB;
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.3s;
+    margin-left: 1rem;
+}
+
+.btn-next:hover {
+    background-color: #4F4F
 
 h1, h2, h3, p {
     margin-bottom: 1rem;
